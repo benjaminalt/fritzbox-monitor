@@ -21,7 +21,7 @@ class DataEntry(tables.IsDescription):
 
 
 class FritzBoxMonitor(object):
-    def __init__(self, archive_dirpath: str, password: str):
+    def __init__(self, archive_dirpath: str, password: str = None):
         self.last_log_items = collections.deque(maxlen=100)
         self.password = password
         if not os.path.exists(archive_dirpath):
@@ -65,7 +65,7 @@ class FritzBoxMonitor(object):
             row.append()
             table.flush()
 
-    def get_data(self):
+    def get_data(self) -> pd.DataFrame:
         print("Reading data from {}".format(self.data_filepath))
         with tables.open_file(self.data_filepath) as data_file:
             table = data_file.root.data.connection_data
